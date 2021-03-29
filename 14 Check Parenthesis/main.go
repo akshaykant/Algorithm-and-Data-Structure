@@ -32,11 +32,12 @@ package main
 
 import "fmt"
 
-type Stack struct{
-	m []byte
+type Stack struct {
+	m   []byte
 	top int
 }
-func main(){
+
+func main() {
 	//str := "()"
 	//str := "()[]{}"
 	//str := "([)]"
@@ -48,33 +49,32 @@ func main(){
 	stack := &Stack{
 		m,
 		top,
-
 	}
 	result := stack.isParentheses(str)
 
 	fmt.Println(result)
 }
 
-func (stack *Stack) isParentheses(input string)(result bool){
+func (stack *Stack) isParentheses(input string) (result bool) {
 
 	if input == "" {
 		return false
 	}
 	//Odd number of elements means missing brackets
-	if len(input) % 2 != 0 {
+	if len(input)%2 != 0 {
 		return false
 	}
 	//Iterate through the string
 	//Push to Stack, if is open bracket.Pop to Stack if it is close bracket.
-	for  i:= 0; i < len(input); i = i + 1{
-		if input[i] == '(' || input[i] == '{' || input[i] == '['{
+	for i := 0; i < len(input); i = i + 1 {
+		if input[i] == '(' || input[i] == '{' || input[i] == '[' {
 			//Push
 			stack.push(input[i])
 		}
-		if input[i] == ')' || input[i] == '}' || input[i] == ']'{
+		if input[i] == ')' || input[i] == '}' || input[i] == ']' {
 			//Pop
 			b, err := stack.pop()
-			if err != ""{
+			if err != "" {
 				return false
 			}
 			var bCompare byte
@@ -82,27 +82,27 @@ func (stack *Stack) isParentheses(input string)(result bool){
 			if input[i] == ')' {
 				bCompare = '('
 			}
-			if input[i] == '}'{
+			if input[i] == '}' {
 				bCompare = '{'
 			}
-			if input[i] == ']'{
+			if input[i] == ']' {
 				bCompare = '['
 			}
-			if bCompare != b{
+			if bCompare != b {
 				return false
 			}
 		}
 	}
 	return true
 }
-func (stack *Stack) push (ele byte){
+func (stack *Stack) push(ele byte) {
 
 	stack.top += 1
 	stack.m[stack.top] = ele
 
 }
 
-func (stack *Stack) pop () (b byte, error string){
+func (stack *Stack) pop() (b byte, error string) {
 	if stack.top < 0 {
 		return b, "Error"
 	}
@@ -110,5 +110,5 @@ func (stack *Stack) pop () (b byte, error string){
 	//Set stack to nil, so that garbage collector can clean the memory
 	stack.m[stack.top] = 0
 	stack.top -= 1
-	return b,""
+	return b, ""
 }

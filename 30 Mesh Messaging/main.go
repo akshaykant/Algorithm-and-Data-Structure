@@ -16,44 +16,43 @@ Your network information takes the form of a hash map mapping username strings t
 
 Example 1:
 
-  network = {
-    'Min'     : ['William', 'Jayden', 'Omar'],
-    'William' : ['Min', 'Noam'],
-    'Jayden'  : ['Min', 'Amelia', 'Ren', 'Noam'],
-    'Ren'     : ['Jayden', 'Omar'],
-    'Amelia'  : ['Jayden', 'Adam', 'Miguel'],
-    'Adam'    : ['Amelia', 'Miguel', 'Sofia', 'Lucas'],
-    'Miguel'  : ['Amelia', 'Adam', 'Liam', 'Nathan'],
-    'Noam'    : ['Nathan', 'Jayden', 'William'],
-    'Omar'    : ['Ren', 'Min', 'Scott'],
-    ...
+ network = {
+  'Min'   : ['William', 'Jayden', 'Omar'],
+  'William' : ['Min', 'Noam'],
+  'Jayden' : ['Min', 'Amelia', 'Ren', 'Noam'],
+  'Ren'   : ['Jayden', 'Omar'],
+  'Amelia' : ['Jayden', 'Adam', 'Miguel'],
+  'Adam'  : ['Amelia', 'Miguel', 'Sofia', 'Lucas'],
+  'Miguel' : ['Amelia', 'Adam', 'Liam', 'Nathan'],
+  'Noam'  : ['Nathan', 'Jayden', 'William'],
+  'Omar'  : ['Ren', 'Min', 'Scott'],
+  ...
 }
 
 For the network above, a message from Jayden to Adam should have this route:
-  ['Jayden', 'Amelia', 'Adam']
+ ['Jayden', 'Amelia', 'Adam']
 */
 
 package main
 
 import "fmt"
 
-type Node struct{
-	item string
+type Node struct {
+	item     string
 	neighbor []string
 }
 
-type Graph struct{
+type Graph struct {
 	mem map[string]*Node
 }
 
-type Queue struct{
-
-	mem []string
+type Queue struct {
+	mem   []string
 	front int
-	back int
+	back  int
 }
 
-func main(){
+func main() {
 
 	memory := make(map[string]*Node)
 
@@ -101,7 +100,7 @@ via BFS, adding each neighbor to the queue, until the destination node is reache
 
 For keeping track of the path,
 */
-func (graph *Graph)  communicationPath(from string, to string)[]string{
+func (graph *Graph) communicationPath(from string, to string) []string {
 
 	/*
 		Look at the nodes_already_seen set—that's really important and easy to forget. If we didn't have it,
@@ -110,32 +109,32 @@ func (graph *Graph)  communicationPath(from string, to string)[]string{
 	nodeAlreadyVisited := make(map[string]bool)
 
 	/*
-	We're using a queue instead of a list because we want an efficient first-in-first-out
-	(FIFO) structure with O(1)O(1) inserts and removes. If we used a list, appending would be O(1)O(1),
-	but removing elements from the front would be O(n)O(n).
+		We're using a queue instead of a list because we want an efficient first-in-first-out
+		(FIFO) structure with O(1)O(1) inserts and removes. If we used a list, appending would be O(1)O(1),
+		but removing elements from the front would be O(n)O(n).
 	*/
 	nodeToVisit := &Queue{make([]string, 0), 0, 0}
 
 	/*
-	This is for book-keeping to store the which node is visited by which node.
-	We can reconstruct our path by traversing visitPath, From to To node and reverse than to get the path.
+		This is for book-keeping to store the which node is visited by which node.
+		We can reconstruct our path by traversing visitPath, From to To node and reverse than to get the path.
 
-	We'd take this dictionary we built up during our search:
+		We'd take this dictionary we built up during our search:
 
-	  {'Min'     : START,
-	 'Jayden'  : 'Min',
-	 'Ren'     : 'Jayden',
-	 'Amelia'  : 'Jayden',
-	 'Adam'    : 'Amelia',
-	 'Miguel'  : 'Amelia',
-	 'William' : 'Min'}
+		 {'Min'   : START,
+		 'Jayden' : 'Min',
+		 'Ren'   : 'Jayden',
+		 'Amelia' : 'Jayden',
+		 'Adam'  : 'Amelia',
+		 'Miguel' : 'Amelia',
+		 'William' : 'Min'}
 
-	And, we'd use it to backtrack from the end node to the start node, recovering our path:
+		And, we'd use it to backtrack from the end node to the start node, recovering our path:
 
-	To get to Adam, we went through Amelia.
-	To get to Amelia, we went through Jayden.
-	To get to Jayden, we went through Min.
-	Min is the start node.
+		To get to Adam, we went through Amelia.
+		To get to Amelia, we went through Jayden.
+		To get to Jayden, we went through Min.
+		Min is the start node.
 	*/
 	visitPath := make(map[string]string)
 
@@ -144,26 +143,24 @@ func (graph *Graph)  communicationPath(from string, to string)[]string{
 	visitPath[from] = "START"
 
 	//BFS: which will traverse through all the neighbors first and then their child
-	for !nodeToVisit.isEmpty(){
+	for !nodeToVisit.isEmpty() {
 
 		current, _ := nodeToVisit.Dequeue()
 
 		neighbor := graph.mem[current].neighbor
 
 		//found the path
-		if current == to{
+		if current == to {
 
 			return reversePath(visitPath, to, from)
 		}
 
-
-		for _, v := range neighbor{
-			if !nodeAlreadyVisited[v]{
+		for _, v := range neighbor {
+			if !nodeAlreadyVisited[v] {
 				nodeAlreadyVisited[v] = true
 				nodeToVisit.Enqueue(v)
 
 				visitPath[v] = current
-
 
 			}
 		}
@@ -172,7 +169,7 @@ func (graph *Graph)  communicationPath(from string, to string)[]string{
 	return nil
 }
 
-func reversePath(visitedPath map[string]string, to string, from string) []string{
+func reversePath(visitedPath map[string]string, to string, from string) []string {
 
 	var res []string
 
@@ -180,16 +177,15 @@ func reversePath(visitedPath map[string]string, to string, from string) []string
 	//traverse from last to first
 	current := visitedPath[to]
 
-	for !(current == "START"){
+	for !(current == "START") {
 
 		res = append(res, current)
 
 		current = visitedPath[current]
 	}
 
-
 	// reverse the results path
-	for i, j := 0, len(res) - 1; i < j; i,j = i+1, j-1{
+	for i, j := 0, len(res)-1; i < j; i, j = i+1, j-1 {
 		res[j], res[i] = res[i], res[j]
 	}
 
@@ -203,33 +199,33 @@ And it makes sense—they're the same distance from each other, after all. That 
 
 What about weighted? We're not given any information suggesting that some transmissions are more expensive than others, so let's say our graph is unweighted.
 */
-func (graph *Graph) addNode(item string){
+func (graph *Graph) addNode(item string) {
 	graph.mem[item] = &Node{item, nil}
 }
 
-func (graph *Graph) addNeighbor(item string, neighbor []string){
+func (graph *Graph) addNeighbor(item string, neighbor []string) {
 
 	//Range though all the neighbors and add item to each neighbor and neighbor to each item, for bi-directional
-	for _, v := range neighbor{
+	for _, v := range neighbor {
 		graph.mem[item].neighbor = append(graph.mem[item].neighbor, v)
 		graph.mem[v].neighbor = append(graph.mem[v].neighbor, item)
 	}
 }
 
-func (q *Queue) isEmpty() bool{
-	if q.front == q.back{
+func (q *Queue) isEmpty() bool {
+	if q.front == q.back {
 		return true
 	}
 	return false
 }
 
-func (q *Queue) Enqueue( item string){
+func (q *Queue) Enqueue(item string) {
 	q.mem = append(q.mem, item)
 	q.back += 1
 }
 
-func (q *Queue) Dequeue()(string, string){
-	if q.isEmpty(){
+func (q *Queue) Dequeue() (string, string) {
+	if q.isEmpty() {
 		return "", "Error : Empty Queue, cannot delete"
 	}
 

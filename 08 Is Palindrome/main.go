@@ -18,7 +18,7 @@ import (
 	"fmt"
 )
 
-func main(){
+func main() {
 	str := "A man, a plan, a canal: Panama"
 
 	result := isPalindrome(str)
@@ -26,60 +26,59 @@ func main(){
 	fmt.Println(result)
 }
 
-func isPalindrome(input string) (result bool){
+func isPalindrome(input string) (result bool) {
 
-	if input == ""{
+	if input == "" {
 		return false
 	}
 
 	//two pointers for checking each rune, one from start and other from end
 
-	for first, last := 0, len(input) - 1; first < last; {
+	for first, last := 0, len(input)-1; first < last; {
 
 		//checkForDigitAndAlphabet
 		isFirstAlphanumeric := checkForDigitAndAlphabet(input[first])
 		isLastAlphanumeric := checkForDigitAndAlphabet(input[last])
 
 		//Pointer increase
-		if first < last && !isFirstAlphanumeric{
+		if first < last && !isFirstAlphanumeric {
 			first = first + 1
 		}
 		//Pointer Decrease
-		if first < last && !isLastAlphanumeric{
+		if first < last && !isLastAlphanumeric {
 			last = last - 1
 		}
 
-		if isFirstAlphanumeric && isLastAlphanumeric{
+		if isFirstAlphanumeric && isLastAlphanumeric {
 			//convert to lowercase and compare
-			if toLowerCase(input[first]) != toLowerCase(input[last]){
+			if toLowerCase(input[first]) != toLowerCase(input[last]) {
 				return false
 			}
 
-			first , last = first + 1, last - 1
+			first, last = first+1, last-1
 
 		}
 
 	}
 
-
 	return true
 }
 
-func checkForDigitAndAlphabet(b byte)(res bool){
+func checkForDigitAndAlphabet(b byte) (res bool) {
 
-	if (b >= 'A' && b <= 'Z') || (b >= 'a' && b <= 'z') || (b >= '0' && b <= '9'){
+	if (b >= 'A' && b <= 'Z') || (b >= 'a' && b <= 'z') || (b >= '0' && b <= '9') {
 		return true
 	}
 
 	return false
 }
 
-func toLowerCase(b byte)(res byte){
-	if b >= 'A' && b <= 'Z'{
+func toLowerCase(b byte) (res byte) {
+	if b >= 'A' && b <= 'Z' {
 		res = b + 'a' - 'A'
 	} else {
 		res = b
 	}
 
-	return  res
+	return res
 }

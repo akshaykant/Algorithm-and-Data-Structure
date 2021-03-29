@@ -3,21 +3,22 @@ package main
 import "fmt"
 
 type Node struct {
-	item int
-	left *Node
+	item  int
+	left  *Node
 	right *Node
 }
 
 type Memory struct {
 	list []int
 }
-func main(){
+
+func main() {
 
 	values := []int{23, 54, 12, 876, 43, 32, 686, 434, 56, 4, 1, 14}
 
 	var root *Node
 
-	for _, v := range  values{
+	for _, v := range values {
 		root = insert(v, root)
 		fmt.Println(v, root)
 	}
@@ -56,31 +57,29 @@ func main(){
 	fmt.Println(height(root))
 }
 
+func insert(item int, root *Node) *Node {
 
-
-func insert(item int, root *Node)*Node{
-
-	if root == nil{
+	if root == nil {
 		root = &Node{item, nil, nil}
 	}
 	//insert left
-	if root.item > item{
+	if root.item > item {
 		root.left = insert(item, root.left)
 	}
 	//insert right
-	if root.item < item{
+	if root.item < item {
 		root.right = insert(item, root.right)
 	}
 
 	return root
 }
 
-func (m *Memory) traverseInOrder(root *Node){
+func (m *Memory) traverseInOrder(root *Node) {
 
-	if root == nil{
+	if root == nil {
 		return
 	}
-	if root.left != nil{
+	if root.left != nil {
 		m.traverseInOrder(root.left)
 	}
 	//fmt.Println(root.item)
@@ -90,106 +89,105 @@ func (m *Memory) traverseInOrder(root *Node){
 	}
 }
 
-func traversePreOrder(root *Node){
+func traversePreOrder(root *Node) {
 
-	if root == nil{
+	if root == nil {
 		return
 	}
 	fmt.Println(root.item)
-	if root.left != nil{
+	if root.left != nil {
 		traversePreOrder(root.left)
 	}
-	if root.right != nil{
+	if root.right != nil {
 		traversePreOrder(root.right)
 	}
 }
 
-func traversePostOrder(root *Node){
-	if root == nil{
+func traversePostOrder(root *Node) {
+	if root == nil {
 		return
 	}
-	if root.left != nil{
+	if root.left != nil {
 		traversePostOrder(root.left)
 	}
-	if root.right != nil{
+	if root.right != nil {
 		traversePostOrder(root.right)
 	}
 	fmt.Println(root.item)
 }
 
-func search(value int, root *Node) bool{
-	if root == nil{
+func search(value int, root *Node) bool {
+	if root == nil {
 		return false
 	}
-	if root.item == value{
+	if root.item == value {
 		return true
 	}
-	if root.item > value{
+	if root.item > value {
 		return search(value, root.left)
 	}
-	if root.item < value{
+	if root.item < value {
 		return search(value, root.right)
 	}
 	return false
 }
 
-func min(root *Node) int{
+func min(root *Node) int {
 
-	if root == nil{
+	if root == nil {
 		return -1
 	}
 
-	if root.left == nil{
+	if root.left == nil {
 		return root.item
 	}
 
 	return min(root.left)
 }
 
-func max(root *Node)int{
+func max(root *Node) int {
 
-	if root == nil{
+	if root == nil {
 		return -1
 	}
 
-	if root.right == nil{
+	if root.right == nil {
 		return root.item
 	}
-
 
 	return max(root.right)
 
 }
 
-func remove(item int, root *Node) *Node{
+func remove(item int, root *Node) *Node {
 
-	if root == nil{
+	if root == nil {
 		return root
 	}
-	if root.item > item{
+	if root.item > item {
 		root.left = remove(item, root.left)
 	}
-	if root.item < item{
+	if root.item < item {
 
 		root.right = remove(item, root.right)
 	}
 
-	if root.item == item{
+	if root.item == item {
 		//no child
-		if root.left == nil && root.right == nil{
+		if root.left == nil && root.right == nil {
 			root = nil
 			return nil
 		}
 		//one child
-		if root.right == nil{
-			root =  root.left
+		if root.right == nil {
+			root = root.left
 		}
-		if root.left == nil{
+		if root.left == nil {
 			root = root.right
 		}
 
 		//both child
-		if root.left != nil && root.right != nil{
+		if root.left != nil && root.right != nil {
 			root.item = min(root.right)
 			root.right = remove(root.item, root.right)
 		}
@@ -197,6 +195,7 @@ func remove(item int, root *Node) *Node{
 	}
 	return root
 }
+
 /*
 
 The height of a tree is the length of the path from the root to the deepest node in the tree. A (rooted) tree with only a node (the root) has a height of zero.
@@ -204,8 +203,8 @@ If there is no node, you want to return -1 not 0. This is because you are adding
 
 So if there isn't a node, you return -1 which cancels out the +1.
 */
-func height(root *Node) int{
-	if root == nil{
+func height(root *Node) int {
+	if root == nil {
 		return -1
 	}
 

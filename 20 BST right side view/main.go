@@ -7,28 +7,28 @@ Input: [1,2,3,null,5,null,4]
 Output: [1, 3, 4]
 Explanation:
 
-   1            <---
- /   \
-2     3         <---
- \     \
-  5     4       <---
+ 1        <---
+/  \
+2   3     <---
+\   \
+ 5   4    <---
 */
 
 package main
 
 import "fmt"
 
-type Node struct{
-	item int
-	left *Node
+type Node struct {
+	item  int
+	left  *Node
 	right *Node
 }
 
-type Queue struct{
+type Queue struct {
 	list []*Node
 }
 
-func main(){
+func main() {
 
 	leaf1 := Node{5, nil, nil}
 
@@ -40,7 +40,6 @@ func main(){
 
 	root := Node{1, &lev1, &lev2}
 
-
 	q := Queue{}
 
 	out := q.rightSideView(&root, []int{})
@@ -48,9 +47,9 @@ func main(){
 	fmt.Println(out)
 }
 
-func (q *Queue)rightSideView(root *Node,visibleList []int) []int{
+func (q *Queue) rightSideView(root *Node, visibleList []int) []int {
 
-	if root == nil{
+	if root == nil {
 		return visibleList
 	}
 
@@ -61,17 +60,17 @@ func (q *Queue)rightSideView(root *Node,visibleList []int) []int{
 
 		size := q.size()
 
-		for i := 0; i < size; i += 1{
+		for i := 0; i < size; i += 1 {
 			current := q.Dequeue()
 
 			//last node for a level
-			if i == size - 1{
+			if i == size-1 {
 				visibleList = append(visibleList, current.item)
 			}
-			if current.left != nil{
+			if current.left != nil {
 				q.Enqueue(current.left)
 			}
-			if current.right != nil{
+			if current.right != nil {
 				q.Enqueue(current.right)
 			}
 		}
@@ -80,14 +79,14 @@ func (q *Queue)rightSideView(root *Node,visibleList []int) []int{
 	return visibleList
 }
 
-func (q *Queue)Enqueue(node *Node){
+func (q *Queue) Enqueue(node *Node) {
 	//enqueue at end
 	q.list = append(q.list, node)
 }
 
-func (q *Queue)Dequeue()*Node{
+func (q *Queue) Dequeue() *Node {
 
-	if len(q.list) == 0{
+	if len(q.list) == 0 {
 		return nil
 	}
 	//dequeue from start
@@ -98,14 +97,14 @@ func (q *Queue)Dequeue()*Node{
 	return node
 }
 
-func (q *Queue)isEmpty() bool{
+func (q *Queue) isEmpty() bool {
 
-	if len(q.list) == 0{
+	if len(q.list) == 0 {
 		return true
 	}
 	return false
 }
 
-func (q *Queue)size()int{
+func (q *Queue) size() int {
 	return len(q.list)
 }

@@ -9,7 +9,7 @@ Example:
 
 Input:
 nums1 = [1,2,3,0,0,0], m = 3
-nums2 = [2,5,6],       n = 3
+nums2 = [2,5,6],    n = 3
 
 Output: [1,2,2,3,5,6]
 */
@@ -24,7 +24,6 @@ func main() {
 	num2 := []int{2, 5, 6}
 	n := 3
 
-
 	out := merge2array(num1, m, num2, n)
 
 	fmt.Println(out)
@@ -32,7 +31,7 @@ func main() {
 
 //Two pointers running from end of each list. And another pointer end of length of first list, to preserve memory.
 //Compare both elements and decrement the pointer until reaches the starting of array
-func merge2array(list1 []int, m int, list2 []int, n int)[]int{
+func merge2array(list1 []int, m int, list2 []int, n int) []int {
 
 	//two pointers at the end of list element
 	ptr1, ptr2 := m-1, n-1
@@ -42,7 +41,7 @@ func merge2array(list1 []int, m int, list2 []int, n int)[]int{
 
 	for ptr1 >= 0 && ptr2 >= 0 {
 
-		if list1[ptr1] < list2[ptr2]{
+		if list1[ptr1] < list2[ptr2] {
 			list1[ptrList] = list2[ptr2]
 			ptr2 -= 1
 		} else {
@@ -54,7 +53,7 @@ func merge2array(list1 []int, m int, list2 []int, n int)[]int{
 
 	//If list2 contains any other element because they are smaller than list2, add them to the starting of list 1
 
-	copy(list1[0:ptr2+1] , list2[0:ptr2+1])
+	copy(list1[0:ptr2+1], list2[0:ptr2+1])
 
 	return list1
 }

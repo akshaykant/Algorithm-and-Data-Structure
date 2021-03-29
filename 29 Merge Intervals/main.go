@@ -17,10 +17,10 @@ package main
 import "fmt"
 import "sort"
 
-func main(){
+func main() {
 
 	/*input := [][]int{{2,6},{15, 18},{8,10},{1, 3}}*/
-	input := [][]int{{1,4},{4,5}}
+	input := [][]int{{1, 4}, {4, 5}}
 
 	res := mergeInterval(input)
 
@@ -31,33 +31,32 @@ func main(){
 O(nlgn) time and O(n)O(n) space.
 If we sort the intervals by their start value, then each set of intervals that can be merged will appear as a contiguous "run" in the sorted list.
 */
-func mergeInterval(intervals [][]int)[][]int{
+func mergeInterval(intervals [][]int) [][]int {
 
 	//Sort the given slice
 	sort.Slice(intervals[:], func(i, j int) bool { return intervals[i][0] < intervals[j][0] })
 
-	result := make([][]int,0)
+	result := make([][]int, 0)
 
-	//Iterate over the intervals and compare for [i[j]  with the last element in result
+	//Iterate over the intervals and compare for [i[j] with the last element in result
 	// Of two intervals, if the [j]] of result(first) is less than equal to the [i] of interval(second), update the result or append it
-	for i, interval := range intervals{
+	for i, interval := range intervals {
 		//For first element, insert in the result
-		if i == 0{
+		if i == 0 {
 			result = append(result, interval)
 			continue
 		}
 
 		//get the last added element in the result,as this need to be merged
-		res := result[len(result) - 1]
+		res := result[len(result)-1]
 
-		if interval[0] <= res[1] && res[1] < interval[1]{
-			result[len(result) - 1] = []int{res[0], interval[1]}  //update the last added to result with the start range of result and end range of interval
+		if interval[0] <= res[1] && res[1] < interval[1] {
+			result[len(result)-1] = []int{res[0], interval[1]} //update the last added to result with the start range of result and end range of interval
 		}
-		if res[1] < interval[0]{
+		if res[1] < interval[0] {
 			result = append(result, interval)
 		}
 	}
-
 
 	return result
 }

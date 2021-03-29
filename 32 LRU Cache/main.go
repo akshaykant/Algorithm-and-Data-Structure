@@ -17,13 +17,13 @@ LRUCache cache = new LRUCache( 2 // capacity // );
 
 cache.put(1, 1);
 cache.put(2, 2);
-cache.get(1);       // returns 1
-cache.put(3, 3);    // evicts key 2
-cache.get(2);       // returns -1 (not found)
-cache.put(4, 4);    // evicts key 1
-cache.get(1);       // returns -1 (not found)
-cache.get(3);       // returns 3
-cache.get(4);       // returns 4
+cache.get(1);    // returns 1
+cache.put(3, 3);  // evicts key 2
+cache.get(2);    // returns -1 (not found)
+cache.put(4, 4);  // evicts key 1
+cache.get(1);    // returns -1 (not found)
+cache.get(3);    // returns 3
+cache.get(4);    // returns 4
 */
 package main
 
@@ -46,45 +46,45 @@ Important: We never need to traverse (search) the linked list because the dictio
 We can add nodes as long as we keep a pointer to the tail since we only ever add to the end of the list.
 */
 
-type kv struct{
+type kv struct {
 	// key is only needed to delete entry in data map
 	// when removing entry from LRU
-	key   int
+	key   int
 	value int
 }
 
-type LRUCache struct{
+type LRUCache struct {
 	capacity int
-	data map[int]*list.Element //Key to Doubly Linked List Node
-	hits *list.List  //doubly linked list
+	data     map[int]*list.Element //Key to Doubly Linked List Node
+	hits     *list.List            //doubly linked list
 }
 
-func main(){
+func main() {
 
 	//constructor
 	lruCache := &LRUCache{
-		capacity:2,
-		data: make(map[int]*list.Element),
-		hits: list.New(),
-		}
+		capacity: 2,
+		data:     make(map[int]*list.Element),
+		hits:     list.New(),
+	}
 
 	lruCache.Put(1, 1)
 	lruCache.Put(2, 2)
-	lruCache.Get(1)       // returns 1
-	lruCache.Put(3, 3)     // evicts key 2
-	lruCache.Get(2)        // returns -1 (not found)
-	lruCache.Put(4, 4)     // evicts key 1
-	lruCache.Get(1)        // returns -1 (not found)
-	lruCache.Get(3)        // returns 3
-	lruCache.Get(4)        // returns 4
+	lruCache.Get(1)    // returns 1
+	lruCache.Put(3, 3) // evicts key 2
+	lruCache.Get(2)    // returns -1 (not found)
+	lruCache.Put(4, 4) // evicts key 1
+	lruCache.Get(1)    // returns -1 (not found)
+	lruCache.Get(3)    // returns 3
+	lruCache.Get(4)    // returns 4
 }
 
 /*
 get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
 */
-func (lruCache *LRUCache) Get (key int) int{
+func (lruCache *LRUCache) Get(key int) int {
 
-	if element, ok := lruCache.data[key]; ok{
+	if element, ok := lruCache.data[key]; ok {
 		//move the element to the front, as this is the recent used element
 		lruCache.hits.MoveToFront(element)
 
@@ -99,9 +99,9 @@ func (lruCache *LRUCache) Get (key int) int{
 put(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity,
 it should invalidate the least recently used item before inserting a new item.
 */
-func (lruCache *LRUCache) Put(key int, value int){
+func (lruCache *LRUCache) Put(key int, value int) {
 	//Update the element and move to front as this is recently used
-	if element, ok := lruCache.data[key]; ok{
+	if element, ok := lruCache.data[key]; ok {
 
 		//Update the value of the element
 		element.Value = kv{key, value}
@@ -114,7 +114,7 @@ func (lruCache *LRUCache) Put(key int, value int){
 	}
 
 	//check if capacity is reached, and add the element to the Front of the List and the element to the Map
-	if lruCache.hits.Len() == lruCache.capacity{
+	if lruCache.hits.Len() == lruCache.capacity {
 		back := lruCache.hits.Back()
 
 		//delete the element from Map for the key of the last element in the list

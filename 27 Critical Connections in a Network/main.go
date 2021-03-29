@@ -8,8 +8,8 @@ Return all critical connections in the network in any order.
 
 Example 1:
 	 |------2
-1----|      |
-|    |---0--|
+1----|   |
+|  |---0--|
 3
 
 Input: n = 4, connections = [[0,1],[1,2],[2,0],[1,3]]
@@ -31,18 +31,18 @@ import (
 	"math"
 )
 
-type Node struct{
-	item int
+type Node struct {
+	item     int
 	neighbor []int
 }
 
-type Graph struct{
-	mem []*Node
+type Graph struct {
+	mem  []*Node
 	time int
 }
 
-func main(){
-	connections := [][]int{{0,1}, {1,2},{2,0},{1,3}}
+func main() {
+	connections := [][]int{{0, 1}, {1, 2}, {2, 0}, {1, 3}}
 
 	n := 4
 	graph := &Graph{}
@@ -58,6 +58,7 @@ func main(){
 	fmt.Println("Tarjan", result)
 
 }
+
 /*
 Tarjan's Algorithm
 https://iq.opengenus.org/tarjans-algorithm/
@@ -90,31 +91,30 @@ For each node, we perform some constant amount of work and iterate over its adja
 
 At maximum, the depth of recursion and the size of stack can be n nodes. Thus the complexity is O(|V|)
 */
-func (graph *Graph) connectedComponentTarjan(n int)[][]int{
+func (graph *Graph) connectedComponentTarjan(n int) [][]int {
 
-	result  := make([][]int, 0)
+	result := make([][]int, 0)
 	dfs_low := make([]int, n)
 
-	dfs_num := make([]int,n)
+	dfs_num := make([]int, n)
 
 	//Mark each node to be not visited(-1)
-	for i := 0; i < n; i += 1{
+	for i := 0; i < n; i += 1 {
 		dfs_num[i] = -1
 	}
 
 	//time to mark the visited nodes
 	graph.time = 0
 
-	for u := 0; u < n; u += 1{
-		if dfs_num[u] == -1{
+	for u := 0; u < n; u += 1 {
+		if dfs_num[u] == -1 {
 			result = graph.dfsTarjan(u, dfs_num, dfs_low, result, u)
 		}
 	}
 	return result
 }
 
-
-func (graph *Graph) dfsTarjan(item int, dfs_num []int, dfs_low []int, result [][]int, parent int) [][]int{
+func (graph *Graph) dfsTarjan(item int, dfs_num []int, dfs_low []int, result [][]int, parent int) [][]int {
 	//When the Node is discovered
 	//increment the time of dfs_num, which is when this node is visited and dfs_low for maintaining it to be part of the  connected components
 	graph.time += 1
@@ -200,19 +200,19 @@ In this solution, only nodes actively in the current search path have 0<=rank[no
 nodes not actively in the current search path may still have 0<=dfn[node]<=low[node]<n.
 */
 
-func (graph *Graph) criticalConnection(){
+func (graph *Graph) criticalConnection() {
 
 }
 
-func (graph *Graph) constructGraph(n int, connections [][]int){
+func (graph *Graph) constructGraph(n int, connections [][]int) {
 
 	//Add all the nodes
-	for i := 0; i < n; i += 1{
+	for i := 0; i < n; i += 1 {
 		graph.addNode(i)
 	}
 
 	//Add all the connections
-	for _, v := range connections{
+	for _, v := range connections {
 		//for undirected graph, add for both the nodes
 		graph.addNeighbor(v[0], v[1])
 		graph.addNeighbor(v[1], v[0])
@@ -220,14 +220,13 @@ func (graph *Graph) constructGraph(n int, connections [][]int){
 	}
 }
 
-
-func (graph *Graph) addNode(item int){
+func (graph *Graph) addNode(item int) {
 	graph.mem = append(graph.mem, &Node{item, nil})
 }
 
-func (graph *Graph) addNeighbor(item int, neighbor int){
+func (graph *Graph) addNeighbor(item int, neighbor int) {
 
-		if graph.mem[item].item == item {
-			graph.mem[item].neighbor = append(graph.mem[item].neighbor, neighbor)
-		}
+	if graph.mem[item].item == item {
+		graph.mem[item].neighbor = append(graph.mem[item].neighbor, neighbor)
+	}
 }

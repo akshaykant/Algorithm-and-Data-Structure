@@ -4,11 +4,11 @@ Given n pairs of parentheses, write a function to generate all combinations of w
 For example, given n = 3, a solution set is:
 
 [
-  "((()))",
-  "(()())",
-  "(())()",
-  "()(())",
-  "()()()"
+ "((()))",
+ "(()())",
+ "(())()",
+ "()(())",
+ "()()()"
 ]
 
 */
@@ -17,11 +17,11 @@ package main
 
 import "fmt"
 
-type Memory struct{
+type Memory struct {
 	list []string
 }
 
-func main(){
+func main() {
 	mem := Memory{}
 
 	n := 3
@@ -39,18 +39,18 @@ We can do this by keeping track of the number of opening and closing brackets we
 We can start an opening bracket if we still have one (of n) left to place.
 And we can start a closing bracket if it would not exceed the number of opening brackets.
 */
-func (m *Memory) generateBracket(n int, open int, close int, cur []byte){
+func (m *Memory) generateBracket(n int, open int, close int, cur []byte) {
 
 	//base condition
-	if len(cur) == n*2{
+	if len(cur) == n*2 {
 		m.list = append(m.list, string(cur))
 	}
 
-	if open < n{
+	if open < n {
 		m.generateBracket(n, open+1, close, append(cur, '('))
 	}
-	if close < open{
-		m.generateBracket(n, open, close + 1, append(cur, ')'))
+	if close < open {
+		m.generateBracket(n, open, close+1, append(cur, ')'))
 	}
 
 }

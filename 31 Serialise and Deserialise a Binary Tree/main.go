@@ -11,11 +11,11 @@ Example:
 
 You may serialize the following tree:
 
-    1
-   / \
-  2   3
-     / \
-    4   5
+  1
+ / \
+ 2  3
+   / \
+  4  5
 
 as pre-order (rootLeftRight)
 "[1,2, null, null,3, 4, null,null,5, null, null]"
@@ -26,28 +26,28 @@ package main
 import "fmt"
 
 type Node struct {
-	item string
-	left *Node
+	item  string
+	left  *Node
 	right *Node
 }
 
 type Queue struct {
-	mem []string
+	mem   []string
 	front int
-	back int
+	back  int
 }
 
-type Memory struct{
+type Memory struct {
 	mem []string
 }
 
-func main(){
+func main() {
 
-	queue := Queue{make([]string, 0), 0, 0 }
-	
+	queue := Queue{make([]string, 0), 0, 0}
+
 	in := []string{"1", "2", "X", "X", "3", "4", "X", "X", "5", "X", "X"}
 
-	for _, v := range in{
+	for _, v := range in {
 		queue.Enqueue(v)
 	}
 	//Place all the nodes in the queue and use them to create the Node with left and right child.
@@ -61,10 +61,10 @@ func main(){
 	fmt.Println(res)
 }
 
-func (memory *Memory) serialize(root *Node){
+func (memory *Memory) serialize(root *Node) {
 
 	//When we encounter no leaf, we attach X
-	if root == nil{
+	if root == nil {
 		memory.mem = append(memory.mem, "X")
 		//remember to return, else this base condition won't be return
 		return
@@ -76,12 +76,12 @@ func (memory *Memory) serialize(root *Node){
 
 }
 
-func (queue *Queue) deserialize() *Node{
-	
+func (queue *Queue) deserialize() *Node {
+
 	current, _ := queue.Dequeue()
 	//
 	//If current node is Null, that is end of the Node. Next item will be added to the parent of it.
-	if current == "X"{
+	if current == "X" {
 		return nil
 	}
 
@@ -92,37 +92,37 @@ func (queue *Queue) deserialize() *Node{
 	//if(current == nil) return nil  //this is not needed
 
 	node := &Node{current, nil, nil}
-	
+
 	node.left = queue.deserialize()
 	node.right = queue.deserialize()
-	
+
 	return node
 }
 
-func (queue *Queue) isEmpty() bool{
-	if queue.front == queue.back{
+func (queue *Queue) isEmpty() bool {
+	if queue.front == queue.back {
 		return true
-	}	
+	}
 	return false
 }
 
-func (queue *Queue) Enqueue(item string){
-	
+func (queue *Queue) Enqueue(item string) {
+
 	queue.mem = append(queue.mem, item)
 	queue.back += 1
 }
 
-func (queue *Queue) Dequeue() (string, string){
-	 
-	if queue.isEmpty(){
+func (queue *Queue) Dequeue() (string, string) {
+
+	if queue.isEmpty() {
 		return "", "Error: empty queue"
 	}
-	
+
 	item := queue.mem[queue.front]
-	
+
 	queue.mem = queue.mem[1:]
-	
+
 	queue.back = len(queue.mem)
-	
+
 	return item, ""
 }
