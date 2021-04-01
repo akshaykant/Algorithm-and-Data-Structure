@@ -81,7 +81,7 @@ func calculateFibonacci1(n int) (result int) {
 
 }
 
-//DP = recursion + memoziation
+//DP = recursion + memoization
 //Time - O(n); Space O(n)
 //take the number as input to compute and the memory as struct to hold all the computed numbers.
 // If number if not present in memory,return the value else calculate and add to the memory
@@ -127,6 +127,10 @@ func calculateFibonacci3(n int) (result int) {
 //DP Bottom Up approach (Optimized space)
 //Time - O(N), Space - O(1)
 func calculateFibonacci4(n int) (result int) {
+
+	if n == 0 {
+		return 0
+	}
 
 	first, second := 0, 1
 
